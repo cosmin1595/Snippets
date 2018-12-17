@@ -1,0 +1,79 @@
+<Window x:Class="WpfApplication1.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:WpfApplication1="clr-namespace:WpfApplication1;assembly="
+    Title="WPF" Height="200" Width="400" >
+
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Width" Value="Auto" />
+            <Setter Property="Height" Value="24" />
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="0.5*"/>
+        </Grid.ColumnDefinitions>
+
+        <ScrollViewer Grid.Column="0">
+            <Canvas>
+                <Button Canvas.Top="80" Canvas.Left="80">In View</Button>
+                <Button Canvas.Top="300" Canvas.Left="80">Out of view</Button>
+            </Canvas>
+        </ScrollViewer>
+
+        <ScrollViewer Grid.Column="1">
+            <WpfApplication1:ScrollableCanvasControl>
+                <Button Canvas.Top="80" Canvas.Left="80">In View</Button>
+                <Button Canvas.Top="300" Canvas.Left="80">Out of View</Button>
+            </WpfApplication1:ScrollableCanvasControl>
+        </ScrollViewer>
+
+    </Grid>
+</Window>
+//File:Window.xaml.cs
+
+using System.Windows;
+using System;
+using System.Windows;
+using System.Windows.Controls;
+namespace WpfApplication1
+{
+    public partial class Window1 : Window
+    {
+        public Window1()
+        {
+            InitializeComponent();
+        }
+    }
+
+    public class ScrollableCanvasControl : Canvas
+    {
+        static ScrollableCanvasControl()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(ScrollableCanvasControl), new FrameworkPropertyMetadata(typeof(ScrollableCanvasControl)));
+        }
+
+        protected override Size MeasureOverride(Size constraint)
+        {
+            double bottomMost = 0d;
+            double rightMost = 0d;
+
+            foreach(object obj in Children)
+            {
+                FrameworkElement child = obj as FrameworkElement;
+
+                if(child != null)
+                {
+                    child.Measure(constraint);
+
+                    bottomMost = Math.Max(bottomMost,GetTop(child) +child.DesiredSize.Height);
+                    rightMost = Math.Max(rightMost, GetLeft(child) + child.DesiredSize.Width);
+                }
+            }
+            return new Size(rightMost, bottomMost);
+        }
+    }
+}
