@@ -1,0 +1,8 @@
+When you need to copy a folder to the Visual Studio output directory, edit the .csproj file and add:
+(https://stackoverflow.com/questions/17742617/copy-entire-directory-to-output-folder-maintaining-the-folder-structure)
+
+<ItemGroup>
+    <Content Include="MYCUSTOMFOLDER\**">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+</ItemGroup>
