@@ -1,3 +1,10 @@
+    // In the XAML code, add the following lines:
+    /*
+    <UserControl.Resources>
+        <vm:ListEnumDescriptionConverter x:Key="ListEnumDescriptionConverter" />
+        <vm:MarkerEnumDescriptionConverter x:Key="MarkerEnumDescriptionConverter" />
+    </UserControl.Resources>
+    */
     public class ListEnumDescriptionConverter : IValueConverter
     {
         object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
